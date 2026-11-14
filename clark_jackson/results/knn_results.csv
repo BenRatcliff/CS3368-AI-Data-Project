@@ -1,0 +1,4 @@
+scaler,best_k,cv_macro_f1,test_accuracy,test_macro_f1,train_s,predict_s
+min-max,5,0.985,0.993,0.988,0.011,0.08
+standard,3,0.987,0.99,0.983,0.013,0.05
+none,1,0.587,0.762,0.59,0.01,0.051

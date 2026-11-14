@@ -10,8 +10,8 @@ CS 3368 Fall 2026 · Team The Port Authority
 
 ```bash
 pip install -r requirements.txt
-python src/preprocess.py
-python src/baseline.py
+python shared/preprocess.py
+python shared/baseline.py
 ```
 
 Run the commands from the repo root.
@@ -21,15 +21,16 @@ Run the commands from the repo root.
 [UNSW-NB15](https://research.unsw.edu.au/projects/unsw-nb15-dataset) (Moustafa & Slay, 2015). The original files are in `data/raw/`. The cleaned files are in `data/processed/`.
 
 Preprocessing:
+
 - Keeps normal traffic (`label == 0`) for dns, http, smtp, and ftp.
 - Drops `id`, `label`, and `attack_cat`.
 - Drops `is_ftp_login`, `ct_ftp_cmd`, `ct_flw_http_mthd`, `trans_depth`, and `response_body_len`. Each is only nonzero for one protocol, so it gives away the answer.
 - The target is `service`.
 
-| | dns | http | smtp | ftp | total |
-|---|---|---|---|---|---|
+|       | dns   | http  | smtp  | ftp   | total  |
+| ----- | ----- | ----- | ----- | ----- | ------ |
 | train | 7,493 | 5,348 | 1,579 | 1,218 | 15,638 |
-| test | 3,068 | 4,013 | 635 | 758 | 8,474 |
+| test  | 3,068 | 4,013 | 635   | 758   | 8,474  |
 
 ## Baseline
 
