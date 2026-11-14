@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+import numpy as np
 
 # file reading
 train = pd.read_csv("data/processed/train.csv")
@@ -63,3 +64,44 @@ print("Macro F1:", round(f1_score(y_test_tcp, pred_a_tcp, average = "macro"), 4)
 print(confusion_matrix(y_test_tcp, pred_a_tcp, labels = ["http", "smtp", "ftp"]))
 
 print(model_a.classes_, model_a.class_prior_)
+
+# find the numeric columns first
+num_cols = list(x_train.select_dtypes("number").columns)
+
+# test to make sure log(negative number) doesn't exist so nothing breaks
+print("Numeric columns:", len(num_cols))
+# sum is used here twice because the first sum returns a series and the second one returns a single number
+print("Negative values found in train:", (x_train[num_cols] < 0).sum().sum())
+print("Negative values found in test:", (x_test[num_cols] < 0).sum().sum())
+
+# copy so that the raw tables stay untouched (model a still needs them)
+x_train_log = x_train.copy()
+x_test_log = x_test.copy()
+
+for col in num_cols:
+    x_train_log[col] = np.log1p(x_train_log[col])
+    x_test_log[col] = np.log1p(x_test_log[col])
+
+# for tcp only
+x_train_log_tcp = x_train_log[tcp_train].drop(columns = proto_cols)
+x_test_log_tcp = x_test_log[tcp_test].drop(columns = proto_cols)
+
+# model b all 4 classes
+model_b = GaussianNB()
+model_b.fit(x_train_log, y_train)
+pred_b = model_b.predict(x_test_log)
+
+print("Model b: all 4 classes")
+print("Accuracy:", round(accuracy_score(y_test, pred_b), 4))
+print("Macro F1:", round(f1_score(y_test, pred_b, average = "macro"), 4))
+print(confusion_matrix(y_test, pred_b, labels = ["dns", "http", "smtp", "ftp"]))
+
+# model b tcp only
+model_b_tcp = GaussianNB()
+model_b_tcp.fit(x_train_log_tcp, y_train_tcp)
+pred_b_tcp = model_b_tcp.predict(x_test_log_tcp)
+
+print("Model b: tcp only")
+print("Accuracy:", round(accuracy_score(y_test_tcp, pred_b_tcp), 4))
+print("Macro F1:", round(f1_score(y_test_tcp, pred_b_tcp, average = "macro"), 4))
+print(confusion_matrix(y_test_tcp, pred_b_tcp, labels = ["http", "smtp", "ftp"]))
