@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
 import numpy as np
+from fcbf import discretize_table, fcbf
 
 # file reading
 train = pd.read_csv("data/processed/train.csv")
@@ -105,3 +106,41 @@ print("Model b: tcp only")
 print("Accuracy:", round(accuracy_score(y_test_tcp, pred_b_tcp), 4))
 print("Macro F1:", round(f1_score(y_test_tcp, pred_b_tcp, average = "macro"), 4))
 print(confusion_matrix(y_test_tcp, pred_b_tcp, labels = ["http", "smtp", "ftp"]))
+
+# Model c: FCBF + log + GaussianNB, all 4 classes
+# bin the training data and let FCBF pick features (train only, no test data involved)
+x_train_disc = discretize_table(x_train, x_train)[0]
+selected_c, scores_c = fcbf(x_train_disc, y_train)
+print("FCBF selected (all classes):", selected_c)
+
+# top 10 most relevant features and their scores
+for col in sorted(scores_c, key = lambda col: scores_c[col], reverse = True)[:10]:
+    print(" ", col, round(scores_c[col], 4))
+
+# train on the log data, but only the columns FCBF kept
+model_c = GaussianNB()
+model_c.fit(x_train_log[selected_c], y_train)
+pred_c = model_c.predict(x_test_log[selected_c])
+
+print("Model c: all 4 classes")
+print("Accuracy:", round(accuracy_score(y_test, pred_c), 4))
+print("Macro F1:", round(f1_score(y_test, pred_c, average = "macro"), 4))
+print(confusion_matrix(y_test, pred_c, labels = ["dns", "http", "smtp", "ftp"]))
+
+# Model c: tcp only
+# FCBF runs again here because different data can mean different features
+x_train_tcp_disc = discretize_table(x_train_tcp, x_train_tcp)[0]
+selected_c_tcp, scores_c_tcp = fcbf(x_train_tcp_disc, y_train_tcp)
+print("FCBF selected (tcp only):", selected_c_tcp)
+
+for col in sorted(scores_c_tcp, key = lambda col: scores_c_tcp[col], reverse = True)[:10]:
+    print(" ", col, round(scores_c_tcp[col], 4))
+
+model_c_tcp = GaussianNB()
+model_c_tcp.fit(x_train_log_tcp[selected_c_tcp], y_train_tcp)
+pred_c_tcp = model_c_tcp.predict(x_test_log_tcp[selected_c_tcp])
+
+print("Model c: tcp only")
+print("Accuracy:", round(accuracy_score(y_test_tcp, pred_c_tcp), 4))
+print("Macro F1:", round(f1_score(y_test_tcp, pred_c_tcp, average = "macro"), 4))
+print(confusion_matrix(y_test_tcp, pred_c_tcp, labels = ["http", "smtp", "ftp"]))
