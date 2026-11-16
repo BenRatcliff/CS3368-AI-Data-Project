@@ -23,6 +23,8 @@ prep = ColumnTransformer(
     ]
 )
 
+# First version: min-max scaling, k = 5
+# Final model: standard scaling, k = 3 is chosen in knn_tune.py and checked in knn_checks.py
 # pipeline
 model = Pipeline([("prep", prep), ("knn", KNeighborsClassifier(n_neighbors=5))])
 
