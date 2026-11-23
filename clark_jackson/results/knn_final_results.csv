@@ -1,0 +1,7 @@
+model,dataset,accuracy,macro_f1,http_ftp_errors,total_errors,predict_seconds
+A: interim,all classes,0.99,0.9831,80,85,0.0761
+B: log,all classes,0.9959,0.9931,35,35,0.0477
+C: log + tuned,all classes,0.9987,0.9978,11,11,0.1168
+A: interim,tcp only,0.9834,0.9762,86,90,0.0205
+B: log,tcp only,0.9928,0.9893,36,39,0.0201
+C: log + tuned,tcp only,0.9985,0.9979,7,8,0.0438
