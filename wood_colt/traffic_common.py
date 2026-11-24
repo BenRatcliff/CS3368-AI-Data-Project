@@ -13,7 +13,8 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
-RESULTS_DIR = BASE_DIR / "results"
+if not (DATA_DIR / "UNSW_NB15_training-set.csv").exists():
+    DATA_DIR = BASE_DIR.parent / "data" / "raw"RESULTS_DIR = BASE_DIR / "results"
 TRAIN_CSV = DATA_DIR / "UNSW_NB15_training-set.csv"
 TEST_CSV = DATA_DIR / "UNSW_NB15_testing-set.csv"
 RANDOM_STATE = 42
