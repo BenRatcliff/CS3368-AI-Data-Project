@@ -1,0 +1,9 @@
+              precision    recall  f1-score   support
+
+        HTTP       0.99      1.00      1.00      4013
+        SMTP       0.97      0.99      0.98       635
+         FTP       0.98      0.96      0.97       758
+
+    accuracy                           0.99      5406
+   macro avg       0.98      0.98      0.98      5406
+weighted avg       0.99      0.99      0.99      5406
