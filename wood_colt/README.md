@@ -20,7 +20,7 @@ This README is for the team GitHub repository. The repository stores the two off
 
    On Windows, `py` may be used instead of `python`.
 
-**Data path:** `traffic_common.py` needs to locate the files in `wood_colt/data/` (submission ZIP) or `../data/raw/` (team GitHub repository). Until the GitHub path fallback is added, copy the two CSVs from `../data/raw/` into `wood_colt/data/` before running the code. The original files are already available in the repository, so they do not need to be uploaded again.
+**Data path:** `traffic_common.py` automatically uses `wood_colt/data/` when the datasets are included in the submission ZIP, or the team's shared `data/raw/` folder when running from GitHub. No manual path changes are needed.
 
 The final script saves output to `results/final_model/`. To reproduce the original Assignment 5 comparisons and figures, run `python train_decision_tree.py` separately. The original script also creates optional `.joblib` models in `results/`.
 
