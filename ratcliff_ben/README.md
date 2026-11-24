@@ -38,6 +38,6 @@ Results are saved to `results/naive_bayes/`.
 
 - FCBF algorithm: Yu & Liu (2003)
 - FCBF with Naive Bayes for traffic classification: Moore & Zuev (2005)
-- Methods for handling skewed data: Radečić (2020)
+- Methods for handling skewed data: Radečić (2020) (Not Scopus indexed)
 - RSM and machine learning for predicting pavement stress under fixed traffic loads: Alnadish et al. (2025)
 - Dataset: UNSW-NB15 (Moustafa & Slay, 2015)
