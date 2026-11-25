@@ -77,3 +77,5 @@ Leakage checks (interim model):
 - 5-fold CV and dropping leaky columns: Antari et al. (2025)
 - Dataset: UNSW-NB15 (Moustafa & Slay, 2015)
 - scikit-learn documentation: Nearest Neighbors
+- Log transform before scaling (Model B): Siddiqi & Pak (2021)
+- Distance-weighted votes (Model C): Dudani (1976)
